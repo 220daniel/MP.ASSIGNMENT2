@@ -233,6 +233,7 @@ type Pagination = {
 };
 
 type YogaData = {
+    error?: string
     items: YogaPose[];
     pagination: Pagination;
 };
@@ -247,6 +248,7 @@ const searchbar = querySelector("ion-searchbar") as IonSearchbar;
 const categorySelect = querySelector("ion-select") as IonSelect;
 const listContainer = querySelector("#yoga-list") as IonList;
 const loadingSpinner = querySelector(".loading-spinner");
+const refreshButton = querySelector("#refreshButton");
 
 function querySelector(selector: string) {
     let element = document.querySelector(selector);
@@ -262,6 +264,10 @@ document.addEventListener("DOMContentLoaded", () => {
     updateList();
     setupEventListeners();
 });
+
+refreshButton.addEventListener('click', ()=>{
+    updateList();
+})
 
 // 事件監聽
 function setupEventListeners() {
@@ -301,9 +307,14 @@ async function updateList() {
     console.log('load yoga response:', res)
     let json = await res.json() as YogaData
     console.log('load yoga data:', json)
+
+    if (json.error) {
+        loadingSpinner.classList.remove("active");
+        alert(json.error)
+        return
+    }
+
     let yogaPoses = json.items
-
-
 
     // 過濾資料
     const filteredPoses = yogaPoses.filter((pose) => {
