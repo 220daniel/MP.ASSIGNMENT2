@@ -1,0 +1,1380 @@
+/* Global Variables */
+:root {
+    --primary-color: #3880ff;
+    --secondary-color: #3dc2ff;
+    --accent-color: #ff9800;
+    --favorite-color: #ffd700; /* Gold for favorites */
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+}
+
+/* Base styles for all screen sizes */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f8;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Layout */
+.item-content, .media-content, .video-container {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+/* Typography */
+.item-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-sm);
+    color: var(--primary-color);
+}
+
+.item-subtitle {
+    color: var(--ion-color-medium);
+    font-size: 0.9rem;
+}
+
+.item-details {
+    margin-top: var(--spacing-sm);
+    font-size: 0.9rem;
+}
+
+.item-date {
+    color: var(--ion-color-medium);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+/* Media Content */
+.media-content {
+    display: grid;
+    gap: var(--spacing-md);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.media-content:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.course-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    loading: lazy;
+}
+
+.video-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.video-placeholder {
+    position: relative;
+    height: 100%;
+    cursor: pointer;
+    background: #000;
+    contain: content;
+    will-change: transform;
+}
+
+.video-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translateZ(0);
+}
+
+/* Tags */
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+}
+
+.tag {
+    cursor: pointer;
+    background-color: var(--accent-color);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: 16px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.tag:hover {
+    background-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+/* Ionic Overrides */
+ion-content {
+    --padding-start: 10px;
+    --padding-end: 10px;
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+}
+
+#filter-select-item {
+    max-width: 200px;
+    margin: var(--spacing-sm) 0;
+}
+
+/* Animation */
+.interactive-element {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Favorites Styles */
+.favorite-btn {
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    transition: transform 0.2s ease;
+    min-width: 44px;
+    min-height: 44px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;            /* Increased z-index */
+    cursor: pointer;         /* Added cursor pointer */
+    background: transparent; /* Ensure transparent background */
+}
+
+.favorite-btn ion-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    pointer-events: none;    /* Prevent icon from intercepting clicks */
+}
+
+/* Remove the pseudo-element as it might interfere with clicking */
+.favorite-btn::before {
+    display: none;
+}
+
+/* Ensure the button container is fully clickable */
+.favorite-btn .button-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;    /* Ensure clicks are captured */
+}
+
+.favorite-btn:active {
+    transform: scale(0.9);
+}
+
+.favorite-btn ion-icon[name="star"] {
+    color: var(--favorite-color);
+}
+
+.favorite-btn ion-icon[name="star-outline"] {
+    color: var(--ion-color-medium);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .favorite-btn {
+        --padding-start: 0.75rem;
+        --padding-end: 0.75rem;
+        min-width: 40px;
+        min-height: 40px;
+    }
+    
+    .favorite-btn ion-icon {
+        font-size: 22px;
+        width: 22px;
+        height: 22px;
+    }
+}
+
+/* Ensure the entire button area is clickable in all views */
+#course-list .item-card .favorite-btn,
+#course-list.grid-view .item-card .favorite-btn,
+#course-list.grid-images-view .item-card .favorite-btn,
+#course-list.gallery-view .item-card .favorite-btn {
+    pointer-events: auto;
+    z-index: 100;
+}
+
+.item-card.favorited {
+    border-left: 4px solid var(--favorite-color);
+}
+
+#favorites-toggle {
+    --padding-start: 0.5rem;
+    --padding-end: 0.5rem;
+}
+
+#favorites-toggle.active {
+    --background: var(--favorite-color);
+    --color: black;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    .item-content {
+        grid-template-columns: 2fr 1fr;
+    }
+    
+    .media-content {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+    }
+    
+    .tag-container {
+        grid-column: 1 / -1;
+    }
+}
+
+/* Small screens (320px - 360px) */
+@media (max-width: 22.5rem) {
+    .item-content {
+        padding: var(--spacing-sm);
+    }
+
+    ion-content {
+        --padding-start: var(--spacing-sm);
+        --padding-end: var(--spacing-sm);
+        --padding-top: var(--spacing-sm);
+        --padding-bottom: var(--spacing-sm);
+    }
+
+    .favorite-btn {
+        --padding-start: 0.3rem;
+        --padding-end: 0.3rem;
+    }
+}
+
+/* Medium screens (361px - 412px) */
+@media (min-width: 22.5625rem) and (max-width: 25.75rem) {
+    .item-content {
+        width: 100%;
+    }
+}
+
+/* Large screens (> 412px) */
+@media (min-width: 25.8125rem) {
+    .item-content {
+        max-width: 75rem;
+        margin: 0 auto;
+    }
+}
+
+/* Ensure all elements respect container width */
+ion-item, ion-list, ion-content, ion-header, ion-toolbar {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Prevent overflow in tag container */
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+}
+
+/* Ensure images and videos don't cause overflow */
+img, video, iframe {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+function initializeVideoPlaceholders() {
+    document.addEventListener('click', (e) => {
+        const placeholder = e.target.closest('.video-placeholder');
+        if (placeholder) {
+            const videoUrl = placeholder.dataset.videoUrl;
+            const iframe = document.createElement('iframe');
+            iframe.src = videoUrl;
+            iframe.frameBorder = "0";
+            iframe.allowFullscreen = true;
+            iframe.loading = "eager";
+            iframe.fetchpriority = "high";
+            placeholder.parentNode.replaceChild(iframe, placeholder);
+        }
+    });
+}
+
+/* Add to your CSS */
+ion-item {
+    transition: all 0.3s ease;
+}
+
+.tag-container ion-chip {
+    transition: all 0.2s ease;
+}
+
+.tag-container ion-chip:active {
+    transform: scale(0.95);
+}
+
+/* Date Range Filter Styles */
+.date-range-item {
+    --padding-start: 0;
+    --padding-end: 0;
+    --inner-padding-end: 0;
+    --inner-padding-start: 0;
+    margin: 0;
+    width: 100%;
+}
+
+#date-range-button {
+    --color: #8B4513; /* Brown color for text */
+    --border-color: transparent; /* Remove default Ionic border */
+    --border-width: 0; /* Remove default border width */
+    --border-style: none; /* Remove default border style */
+    border: 2px solid #8B4513; /* Brown border */
+    border-radius: 8px;
+}
+
+#date-range-button ion-icon {
+    color: #8B4513; /* Brown color for calendar icon */
+}
+
+#date-range-text {
+    color: #8B4513; /* Brown color */
+    font-weight: bold;
+}
+
+/* Date Range Modal Styles */
+#date-range-modal {
+    --width: 100%;
+    --max-width: 500px;
+    --height: 50vh;
+    --border-radius: 8px;
+}
+
+#date-range-modal ion-content {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+}
+
+#date-range-modal ion-datetime {
+    width: 100%;
+    max-width: 100%;
+    --padding-start: 0;
+    --padding-end: 0;
+    --background: var(--ion-background-color);
+    --background-rgb: var(--ion-background-color-rgb);
+    --wheel-highlight-background: var(--ion-color-primary);
+    --wheel-highlight-border-radius: 8px;
+    --wheel-fade-background-rgb: var(--ion-background-color-rgb);
+}
+
+#date-range-modal ion-item {
+    --padding-start: 0;
+    --padding-end: 0;
+    --inner-padding-end: 0;
+    --inner-padding-start: 0;
+    margin-bottom: 16px;
+}
+
+#date-range-modal ion-label {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+#date-range-modal ion-button {
+    margin-top: 16px;
+    height: 44px;
+}
+
+/* Small screens (320px - 360px) */
+@media (max-width: 22.5rem) {
+    #date-range-modal {
+        --height: 60vh;
+    }
+
+    #date-range-modal ion-content {
+        --padding-start: 8px;
+        --padding-end: 8px;
+        --padding-top: 8px;
+        --padding-bottom: 8px;
+    }
+
+    #date-range-modal ion-datetime {
+        font-size: 0.9rem;
+    }
+
+    #date-range-modal ion-button {
+        height: 40px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Medium screens (361px - 412px) */
+@media (min-width: 22.5625rem) and (max-width: 25.75rem) {
+    #date-range-modal ion-content {
+        --padding-start: 12px;
+        --padding-end: 12px;
+    }
+}
+
+/* Large screens (> 412px) */
+@media (min-width: 25.8125rem) {
+    #date-range-modal {
+        --height: 45vh;
+    }
+}
+
+/* Landscape mode */
+@media (orientation: landscape) {
+    #date-range-modal {
+        --height: 80vh;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    #date-range-modal ion-datetime {
+        --background: var(--ion-background-color);
+        --wheel-fade-background-rgb: var(--ion-background-color-rgb);
+    }
+}
+
+/* Calendar day styles */
+ion-datetime::part(calendar-day) {
+    min-width: 36px;
+    min-height: 36px;
+    font-size: 0.9rem;
+}
+
+ion-datetime::part(calendar-day):hover {
+    background: var(--ion-color-light);
+}
+
+ion-datetime::part(calendar-day-active) {
+    background: var(--ion-color-primary);
+    color: white;
+}
+
+/* Small screen calendar adjustments */
+@media (max-width: 22.5rem) {
+    ion-datetime::part(calendar-day) {
+        min-width: 32px;
+        min-height: 32px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Improve touch targets */
+ion-datetime::part(wheel-item) {
+    padding: 8px 0;
+}
+
+/* Ensure proper display in popover */
+ion-datetime::part(wheel-highlight) {
+    background: var(--ion-color-primary);
+    border-radius: 8px;
+}
+
+/* Date range button styles */
+#date-range-button {
+    --padding-start: 8px;
+    --padding-end: 8px;
+    margin: 0;
+    width: 100%;
+    height: 36px;
+    font-size: 0.9rem;
+}
+
+#date-range-button ion-icon {
+    margin-right: 4px;
+}
+
+#date-range-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 24px);
+}
+
+/* Small screen button adjustments */
+@media (max-width: 22.5rem) {
+    #date-range-button {
+        --padding-start: 4px;
+        --padding-end: 4px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+}
+
+#sort-direction {
+    --padding-start: 8px;
+    --padding-end: 8px;
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+}
+
+#sort-direction ion-icon {
+    font-size: 1.2rem;
+    color: var(--ion-color-medium);
+}
+
+#sort-direction:active {
+    transform: scale(0.9);
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    #sort-direction ion-icon {
+        color: var(--ion-color-light);
+    }
+}
+
+/* Card Styles */
+.item-card {
+    width: 100%;
+    margin: 0;
+    --background: var(--ion-background-color);
+    --color: var(--ion-text-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative; /* For positioning favorite button */
+}
+
+.item-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+ion-card-header {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+ion-card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    order: 1; /* Ensure title appears first */
+}
+
+ion-card-subtitle {
+    color: var(--ion-color-medium);
+    font-size: 0.9rem;
+    order: 2; /* Subtitle appears second */
+}
+
+ion-card-content {
+    padding: 16px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .item-card {
+        --background: var(--ion-background-color);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .item-card:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .item-card {
+        margin: 8px 0;
+    }
+    
+    ion-card-header {
+        padding: 12px;
+    }
+    
+    ion-card-content {
+        padding: 12px;
+    }
+}
+
+#course-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    position: relative;
+    min-height: 200px;
+}
+
+#course-list .item-card {
+    width: 100%;
+    margin: 0;
+    opacity: 1;
+    transform: none;
+    transition: all 0.3s ease;
+}
+
+#course-list.grid-images-view {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+#course-list.grid-images-view .item-card {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#course-list.grid-images-view .item-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+#course-list.grid-images-view .item-card:hover img {
+    transform: scale(1.1);
+}
+
+#course-list.grid-images-view .image-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#course-list.grid-images-view .item-card:hover .image-overlay {
+    opacity: 1;
+}
+
+#course-list.grid-images-view .image-overlay h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+#course-list.grid-images-view .image-overlay p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Statistics Charts */
+.stats-container {
+    display: none;
+    padding: 1rem;
+    background: var(--ion-background-color);
+    border-bottom: 1px solid var(--ion-border-color);
+    transition: all 0.3s ease;
+}
+
+.stats-container.visible {
+    display: block;
+}
+
+.stats-charts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.chart-container {
+    background: var(--ion-card-background);
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container h3 {
+    margin: 0 0 1rem 0;
+    color: black !important;
+    font-size: 1.1rem;
+}
+
+.chart {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.bar-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 30px;
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.bar-label {
+    min-width: 120px;
+    font-size: 0.9rem;
+    color: var(--ion-color-medium);
+}
+
+.bar {
+    flex: 1;
+    height: 20px;
+    border-radius: 4px;
+    background-color: var(--bar-color);
+    width: var(--bar-width, 0%);
+    transition: width 0.3s ease;
+    transform: translateZ(0); /* Force hardware acceleration */
+    will-change: width; /* Optimize animations */
+}
+
+.bar-value {
+    min-width: 30px;
+    text-align: right;
+    font-size: 0.9rem;
+    color: var(--ion-color-medium);
+}
+
+/* Responsive Charts */
+@media (max-width: 768px) {
+    .stats-charts {
+        grid-template-columns: 1fr;
+    }
+    
+    .bar-label {
+        min-width: 100px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-container {
+        padding: 0.5rem;
+    }
+    
+    .chart-container {
+        padding: 0.75rem;
+    }
+    
+    .bar-container {
+        height: 25px;
+    }
+    
+    .bar {
+        height: 15px;
+    }
+    
+    .bar-label {
+        min-width: 80px;
+        font-size: 0.75rem;
+    }
+    
+    .bar-value {
+        font-size: 0.75rem;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .chart-container {
+        background: var(--ion-card-background);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    .bar-label,
+    .bar-value {
+        color: var(--ion-color-light);
+    }
+}
+
+/* Loading Animations */
+.skeleton {
+    position: relative;
+    overflow: hidden;
+    background: var(--ion-background-color);
+}
+
+.skeleton::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, 0.2) 20%,
+        rgba(255, 255, 255, 0.5) 60%,
+        rgba(255, 255, 255, 0)
+    );
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.skeleton-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--ion-card-background);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.skeleton-image {
+    width: 100%;
+    height: 200px;
+    background: var(--ion-color-light);
+    border-radius: 8px;
+}
+
+.skeleton-text {
+    height: 1rem;
+    background: var(--ion-color-light);
+    border-radius: 4px;
+}
+
+.skeleton-text.short {
+    width: 60%;
+}
+
+.skeleton-text.medium {
+    width: 80%;
+}
+
+.skeleton-text.long {
+    width: 100%;
+}
+
+.skeleton-tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.skeleton-tag {
+    width: 80px;
+    height: 24px;
+    background: var(--ion-color-light);
+    border-radius: 12px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .skeleton::after {
+        background: linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0) 0,
+            rgba(0, 0, 0, 0.2) 20%,
+            rgba(0, 0, 0, 0.5) 60%,
+            rgba(0, 0, 0, 0)
+        );
+    }
+    
+    .skeleton-image,
+    .skeleton-text,
+    .skeleton-tag {
+        background: var(--ion-color-dark);
+    }
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.5;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+
+.loading-spinner ion-spinner {
+    width: 40px;
+    height: 40px;
+    --color: var(--ion-color-primary);
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+/* Page Transition Animations */
+ion-content {
+    position: relative;
+    overflow: hidden;
+}
+
+.page-transition {
+    position: relative;
+    opacity: 1;
+    transform: none;
+}
+
+.page-enter,
+.page-exit,
+.page-enter-active,
+.page-exit-active {
+    opacity: 1;
+    transform: none;
+}
+
+.view-transition {
+    transition: all 0.3s ease;
+    opacity: 1;
+    transform: none;
+}
+
+/* Smooth Transitions */
+ion-item {
+    transition: all 0.3s ease;
+}
+
+ion-card {
+    transition: all 0.3s ease;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .page-transition {
+        background: var(--ion-background-color);
+    }
+}
+
+/* Grid View Styles */
+#course-list.grid-view {
+    display: grid !important;
+    gap: 12px !important;
+    padding: 12px !important;
+    background: transparent !important;
+}
+
+/* Base grid layout for smallest screens (iPhone 5/SE - 320px) */
+@media screen and (max-width: 359px) {
+    #course-list.grid-view {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 6px !important;
+        padding: 6px !important;
+    }
+    
+    #course-list.grid-view .item-card {
+        height: 140px !important;
+    }
+
+    #course-list.grid-view .grid-overlay h3 {
+        font-size: 10px !important;
+        padding: 4px !important;
+    }
+
+    /* Adjust button container for smaller screens */
+    .button-container {
+        padding: 4px 6px;
+        gap: 4px;
+    }
+    
+    .button-container ion-button {
+        --padding-start: 2px;
+        --padding-end: 2px;
+        height: 32px;
+        font-size: 10px;
+    }
+
+    .button-container ion-button ion-icon {
+        font-size: 14px;
+    }
+}
+
+/* Medium screens (360px - 374px) - Galaxy S5 */
+@media screen and (min-width: 360px) and (max-width: 374px) {
+    #course-list.grid-view {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+    }
+    
+    #course-list.grid-view .item-card {
+        height: 160px !important;
+    }
+}
+
+/* Medium screens (375px - 411px) - iPhone 6/7/8 */
+@media screen and (min-width: 375px) and (max-width: 411px) {
+    #course-list.grid-view {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+    
+    #course-list.grid-view .item-card {
+        height: 170px !important;
+    }
+}
+
+/* Large screens (412px - 427px) - Galaxy Note */
+@media screen and (min-width: 412px) and (max-width: 427px) {
+    #course-list.grid-view {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+    }
+    
+    #course-list.grid-view .item-card {
+        height: 190px !important;
+    }
+}
+
+/* Largest screens (428px and above) - iPhone 12 Pro Max */
+@media screen and (min-width: 428px) {
+    #course-list.grid-view {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 16px !important;
+    }
+    
+    #course-list.grid-view .item-card {
+        height: 200px !important;
+    }
+}
+
+/* Common styles for all grid items */
+#course-list.grid-view ion-item {
+    --padding-start: 0 !important;
+    --padding-end: 0 !important;
+    --inner-padding-start: 0 !important;
+    --inner-padding-end: 0 !important;
+    width: 100% !important;
+    --background: transparent !important;
+    margin: 0 !important;
+}
+
+#course-list.grid-view .item-card {
+    margin: 0 !important;
+    position: relative !important;
+    overflow: hidden !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+#course-list.grid-view .grid-image-container {
+    width: 100% !important;
+    height: 100% !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+#course-list.grid-view .course-image {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+#course-list.grid-view .grid-overlay {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7)) !important;
+    padding: 6px !important;
+}
+
+#course-list.grid-view .grid-overlay h3 {
+    margin: 0 !important;
+    font-size: 10px !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    line-height: 1.2 !important;
+}
+
+/* Adjust font size for larger screens */
+@media screen and (min-width: 375px) {
+    #course-list.grid-view .grid-overlay h3 {
+        font-size: 14px !important;
+    }
+}
+
+@media screen and (min-width: 412px) {
+    #course-list.grid-view .grid-overlay h3 {
+        font-size: 16px !important;
+    }
+}
+
+/* Hide unnecessary elements in grid view */
+#course-list.grid-view ion-card-header,
+#course-list.grid-view ion-card-content > *:not(.grid-image-wrapper) {
+    display: none !important;
+}
+
+/* Hover effects */
+#course-list.grid-view .item-card:hover .course-image {
+    transform: scale(1.1) !important;
+}
+
+#course-list.grid-view .item-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Style for the view toggle button */
+#view-toggle {
+    --padding-start: 0.5rem;
+    --padding-end: 0.5rem;
+}
+
+#view-toggle ion-icon {
+    margin-right: 4px;
+}
+
+/* Update the button container styles */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    gap: 8px;
+}
+
+.button-container ion-button {
+    flex: 1;
+    --padding-start: 8px;
+    --padding-end: 8px;
+    height: 40px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Ensure icons and labels stay aligned */
+.button-container ion-button ion-icon {
+    margin-right: 4px;
+    font-size: 1.2em;
+}
+
+.button-container ion-label {
+    margin-left: 4px;
+    white-space: nowrap;
+}
+
+/* Responsive styles for different screen sizes */
+/* iPhone 5/SE (320px) */
+@media screen and (max-width: 359px) {
+    .button-container {
+        padding: 4px 8px;
+        gap: 4px;
+    }
+    
+    .button-container ion-button {
+        --padding-start: 4px;
+        --padding-end: 4px;
+        height: 34px;
+        font-size: 11px;
+    }
+}
+
+/* Galaxy S5 (360px) */
+@media screen and (min-width: 360px) and (max-width: 374px) {
+    .button-container {
+        padding: 6px 10px;
+        gap: 6px;
+    }
+    
+    .button-container ion-button {
+        --padding-start: 6px;
+        --padding-end: 6px;
+        height: 36px;
+        font-size: 12px;
+    }
+}
+
+/* iPhone 6/7/8 (375px) */
+@media screen and (min-width: 375px) and (max-width: 411px) {
+    .button-container {
+        padding: 6px 12px;
+        gap: 8px;
+    }
+    
+    .button-container ion-button {
+        --padding-start: 6px;
+        --padding-end: 6px;
+        height: 38px;
+        font-size: 13px;
+    }
+}
+
+/* Galaxy Note (412px) */
+@media screen and (min-width: 412px) and (max-width: 427px) {
+    .button-container {
+        padding: 8px 16px;
+        gap: 10px;
+    }
+    
+    .button-container ion-button {
+        --padding-start: 8px;
+        --padding-end: 8px;
+        height: 40px;
+        font-size: 14px;
+    }
+}
+
+/* iPhone 12 Pro Max (428px) */
+@media screen and (min-width: 428px) {
+    .button-container {
+        padding: 10px 20px;
+        gap: 12px;
+    }
+    
+    .button-container ion-button {
+        --padding-start: 10px;
+        --padding-end: 10px;
+        height: 44px;
+        font-size: 15px;
+    }
+}
+
+/* Header Styles */
+ion-toolbar {
+    --background: #D2B48C;    /* Light brown (tan) color */
+    --color: #8B4513;         /* Dark brown text for contrast */
+}
+
+ion-title {
+    font-weight: 500;         /* Make the text slightly bolder */
+    letter-spacing: 0.5px;    /* Add slight letter spacing */
+    color: #8B4513;          /* Dark brown text color */
+}
+
+/* Optional: Add a subtle shadow to make the header stand out */
+ion-header {
+    box-shadow: 0 2px 4px rgba(139, 69, 19, 0.1);  /* Brown-tinted shadow */
+}
+
+/* Optional: Style the border below the header */
+ion-header::after {
+    background-image: none;  /* Remove default border */
+    border-bottom: 1px solid rgba(139, 69, 19, 0.2);  /* Add subtle brown border */
+}
+
+/* Make sure the searchbar below the header matches the theme */
+ion-searchbar {
+    --background: rgba(210, 180, 140, 0.1);  /* Very light brown background */
+    --color: #8B4513;                        /* Dark brown text */
+    --placeholder-color: rgba(139, 69, 19, 0.6);  /* Brown placeholder text */
+    margin: 8px 0;                           /* Add some spacing */
+}
+
+/* Specific text color overrides for the buttons and stats title */
+#view-toggle ion-label,
+#stats-toggle ion-label,
+#favorites-toggle ion-label {
+    color: black !important;  /* Force black color for the button labels */
+}
+
+/* Style for the stats container title */
+.chart-container h3 {
+    color: black !important;  /* Force black color for the stats title */
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+}
+
+/* Keep the icons in their original color */
+#view-toggle ion-icon,
+#stats-toggle ion-icon,
+#favorites-toggle ion-icon {
+    /* Original icon colors remain unchanged */
+}
+
+/* Ensure text remains black even when button is active */
+#view-toggle.active ion-label,
+#stats-toggle.active ion-label,
+#favorites-toggle.active ion-label {
+    color: black !important;
+}
+
+/* Ensure text remains black in different states */
+#view-toggle:hover ion-label,
+#stats-toggle:hover ion-label,
+#favorites-toggle:hover ion-label {
+    color: black !important;
+}
+
+
+[hidden] {
+  display: none !important;
+}

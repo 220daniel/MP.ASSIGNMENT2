@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,85 +17,12 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"
     />
-    <style>
-      .item-content {
-        width: 100%;
-        padding: 10px;
-      }
-      .item-title {
-        font-weight: bold;
-        font-size: 1.2em;
-        margin: 0.5rem 0;
-      }
-      .item-subtitle {
-        color: var(--ion-color-medium);
-        font-size: 0.9em;
-      }
-      .item-details,
-      .item-precautions {
-        font-size: 0.85em;
-        margin: 0.5rem 0;
-      }
-      .tag-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-top: 0.5rem;
-      }
-      .item-image {
-        max-width: 100%;
-        height: auto;
-        max-height: 200px;
-        object-fit: cover;
-        border-radius: 8px;
-        margin: 0.5rem 0;
-      }
-      .item-video {
-        max-width: 100%;
-        height: auto;
-        border-radius: 8px;
-        margin: 0.5rem 0;
-      }
-      ion-card {
-        margin: 10px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      }
-      /* 響應式設計 */
-      @media (min-width: 768px) {
-        .item-content {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1rem;
-        }
-        .item-image,
-        .item-video {
-          max-height: 300px;
-        }
-      }
-      @media (min-width: 1024px) {
-        ion-list {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-          gap: 1rem;
-        }
-        ion-item {
-          margin: 0;
-        }
-      }
-      .loading-spinner {
-        display: none;
-        text-align: center;
-        padding: 20px;
-      }
-      .loading-spinner.active {
-        display: block;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <ion-app>
       <ion-header>
-        <ion-toolbar color="primary">
+        <ion-toolbar>
           <ion-title>瑜伽動作清單</ion-title>
           <ion-buttons slot="end">
             <ion-button color="light" id="refreshButton">
@@ -103,34 +30,188 @@
             </ion-button>
           </ion-buttons>
         </ion-toolbar>
-        <ion-searchbar
-          placeholder="搜尋動作名稱或效果..."
-          debounce="300"
-        ></ion-searchbar>
+        <ion-searchbar id="search-input" placeholder="搜尋..."></ion-searchbar>
         <ion-item>
           <ion-select
-            label="選擇難度"
-            interface="popover"
-            placeholder="全部"
-            value=""
+            id="category-filter"
+            label="分類"
+            interface="alert"
+            multiple="true"
+            ok-text="確認"
+            cancel-text="取消"
           >
             <ion-select-option value="">全部</ion-select-option>
-            <ion-select-option value="初級">初級</ion-select-option>
-            <ion-select-option value="中級">中級</ion-select-option>
-            <ion-select-option value="高級">高級</ion-select-option>
+            <ion-select-option value="嵌入式開源硬體"
+              >嵌入式開源硬體</ion-select-option
+            >
+            <ion-select-option value="開源通訊與電子設備"
+              >開源通訊與電子設備</ion-select-option
+            >
+            <ion-select-option value="機器人與開源製造"
+              >機器人與開源製造</ion-select-option
+            >
+            <ion-select-option value="開源科學與環境監測"
+              >開源科學與環境監測</ion-select-option
+            >
           </ion-select>
         </ion-item>
+        <ion-item>
+          <ion-select id="sort-by" label="排序" interface="popover">
+            <ion-select-option value="">預設</ion-select-option>
+            <ion-select-option value="title">標題 (A-Z)</ion-select-option>
+            <ion-select-option value="title-desc">標題 (Z-A)</ion-select-option>
+            <ion-select-option value="date">日期 (新到舊)</ion-select-option>
+            <ion-select-option value="date-desc"
+              >日期 (舊到新)</ion-select-option
+            >
+            <ion-select-option value="level">難度 (低到高)</ion-select-option>
+            <ion-select-option value="level-desc"
+              >難度 (高到低)</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+        <ion-item class="date-range-item">
+          <ion-button id="date-range-button" fill="outline" size="small">
+            <ion-icon name="calendar" slot="start"></ion-icon>
+            <span id="date-range-text">日期範圍</span>
+          </ion-button>
+        </ion-item>
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+          "
+        >
+          <div class="button-container">
+            <ion-button id="view-toggle" fill="clear" onclick="toggleView()">
+              <ion-icon name="grid" slot="icon-only"></ion-icon>
+              <ion-label>網格視圖</ion-label>
+            </ion-button>
+            <ion-button id="stats-toggle" fill="clear" onclick="toggleStats()">
+              <ion-icon name="stats-chart" slot="icon-only"></ion-icon>
+              <ion-label>統計圖表</ion-label>
+            </ion-button>
+            <ion-button
+              id="favorites-toggle"
+              fill="clear"
+              onclick="toggleFavoritesFilter()"
+            >
+              <ion-icon name="star" slot="icon-only"></ion-icon>
+              <ion-label>收藏</ion-label>
+            </ion-button>
+          </div>
+        </div>
       </ion-header>
 
       <ion-content>
-        <div class="loading-spinner">
-          <ion-spinner name="crescent"></ion-spinner>
+        <div id="stats-container" class="stats-container">
+          <div class="stats-charts">
+            <div class="chart-container">
+              <h3>分類統計</h3>
+              <div id="category-chart" class="chart"></div>
+            </div>
+            <div class="chart-container">
+              <h3>難度分佈</h3>
+              <div id="level-chart" class="chart"></div>
+            </div>
+          </div>
         </div>
-        <ion-list id="yoga-list"></ion-list>
-        <ion-button id="prevPageButton" disabled>Prev Page</ion-button>
-        <ion-button id="nextPageButton">Next Page</ion-button>
+        <ion-list id="courseList">
+          <ion-item class="skeleton-item">
+            <ion-thumbnail slot="start">
+              <ion-skeleton-text animated="true"></ion-skeleton-text>
+            </ion-thumbnail>
+            <ion-label>
+              <h3>
+                <ion-skeleton-text
+                  animated="true"
+                  style="width: 80%"
+                ></ion-skeleton-text>
+              </h3>
+              <p>
+                <ion-skeleton-text
+                  animated="true"
+                  style="width: 60%"
+                ></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text
+                  animated="true"
+                  style="width: 30%"
+                ></ion-skeleton-text>
+              </p>
+            </ion-label>
+          </ion-item>
+          <ion-card class="item-card">
+            <ion-card-header>
+              <ion-card-title class="item-title"></ion-card-title>
+              <ion-card-subtitle class="item-subtitle"></ion-card-subtitle>
+              <ion-button class="favorite-btn" fill="clear">
+                <ion-icon name="star" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ion-card-header>
+            <ion-card-content>
+              <p class="item-details"></p>
+              <div class="item-date"></div>
+              <div class="media-content">
+                <img class="course-image" src="" loading="lazy" />
+                <div class="video-container">
+                  <iframe src="" frameborder="0" allowfullscreen></iframe>
+                  <video controls>
+                    <source src="" type="video/mp4" />
+                  </video>
+                </div>
+              </div>
+              <div class="tag-container">
+                <ion-chip class="tag" data-type="sample-tag">
+                  sample-tag-name
+                </ion-chip>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-list>
+
+        <ion-button id="prevPageButton" expand="block" hidden>
+          上一頁
+        </ion-button>
+        <ion-button id="nextPageButton" expand="block" hidden>
+          下一頁
+        </ion-button>
+
+        <ion-modal id="loginModal">
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>登入</ion-title>
+              <ion-buttons slot="start">
+                <ion-button color="light"> Close </ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content>
+            <ion-list>
+              <ion-input
+                id="usernameInput"
+                type="text"
+                label="帳號"
+              ></ion-input>
+              <ion-input
+                id="passwordInput"
+                type="password"
+                label="密碼"
+              ></ion-input>
+              <ion-button expand="block" id="loginButton">登入</ion-button>
+              <ion-button expand="block" id="registerButton">註冊</ion-button>
+            </ion-list>
+          </ion-content>
+        </ion-modal>
+
+        <ion-toast id="errorToast" duration="5000" color="danger"></ion-toast>
       </ion-content>
     </ion-app>
+
+    <ion-toast id="error-toast"></ion-toast>
 
     <script src="bundle.js"></script>
   </body>
