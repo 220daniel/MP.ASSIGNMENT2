@@ -1,6 +1,7 @@
 import { IonSearchbar } from '@ionic/core/components/ion-searchbar'
 import { IonSelect } from '@ionic/core/components/ion-select'
 import { IonList } from '@ionic/core/components/ion-list'
+import { IonButton } from '@ionic/core/components/ion-button'
 
 
 let baseUrl = 'https://dae-mobile-assignment.hkit.cc'
@@ -249,6 +250,10 @@ const categorySelect = querySelector("ion-select") as IonSelect;
 const listContainer = querySelector("#yoga-list") as IonList;
 const loadingSpinner = querySelector(".loading-spinner");
 const refreshButton = querySelector("#refreshButton");
+const prevPageButton = querySelector("#prevPageButton") as IonButton;
+const nextPageButton = querySelector("#nextPageButton") as IonButton;
+
+let page = 1
 
 function querySelector(selector: string) {
     let element = document.querySelector(selector);
@@ -265,11 +270,24 @@ document.addEventListener("DOMContentLoaded", () => {
     setupEventListeners();
 });
 
-refreshButton.addEventListener('click', ()=>{
+// 事件監聽
+refreshButton.addEventListener('click', () => {
     updateList();
 })
 
-// 事件監聽
+prevPageButton.addEventListener('click', () => {
+    page--
+    updateList()
+    if (page == 1) {
+        prevPageButton.disabled = true
+    }
+})
+nextPageButton.addEventListener('click', () => {
+    page++
+    prevPageButton.disabled = false
+    updateList()
+})
+
 function setupEventListeners() {
     // 搜尋
     searchbar.addEventListener("ionInput", (e) => {
@@ -300,8 +318,9 @@ async function updateList() {
     listContainer.innerHTML = "";
 
 
-    // https://dae-mobile-assignment.hkit.cc/api/yoga-poses
-    let url = baseUrl + '/api/yoga-poses'
+    // https://dae-mobile-assignment.hkit.cc/api/yoga-poses?page=2
+    // let url = baseUrl + '/api/yoga-poses?page=' + page
+    let url = `${baseUrl}/api/yoga-poses?page=${page}`
     console.log('loading yoga list from:', url)
     let res = await fetch(url)
     console.log('load yoga response:', res)
