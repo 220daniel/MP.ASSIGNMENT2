@@ -1,0 +1,21 @@
+{
+  "name": "mp.assignment2",
+  "version": "1.0.0",
+  "description": "- 姓名：Leung Man Hong\r - 學號：24800923\r - 主題編號：3\r - 主題名稱：瑜伽動作",
+  "main": "script.js",
+  "scripts": {
+    "dev": "esbuild app.ts --outfile=bundle.js --watch",
+    "build": "esbuild app.ts --outfile=bundle.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "esbuild": "^0.25.3",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@ionic/core": "^8.5.6"
+  }
+}
